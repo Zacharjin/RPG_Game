@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package game;
 
 import java.awt.Color;
@@ -19,68 +18,73 @@ import java.util.Random;
  * @author Piotr
  */
 public class FightManager {
-    private ArrayList <Being> list;
+
+    private ArrayList<Being> list;
     private Being[] enemies;
     private Being center;
     private int fieldOfView;
     private Graphics g;
-    
-    public FightManager(Graphics g,int fieldOfView,Being center,Being[] enemies){
+
+    public FightManager(Graphics g, int fieldOfView, Being center, Being[] enemies) {
         //System.out.println("Tworze arrayList");
-        list=new ArrayList<Being>();
-        this.fieldOfView=fieldOfView;
-        this.enemies=enemies;
-        this.center=center;
-        this.g=g;
+        list = new ArrayList<Being>();
+        this.fieldOfView = fieldOfView;
+        this.enemies = enemies;
+        this.center = center;
+        this.g = g;
     }
-    
-    public void update(){
-        if(!list.isEmpty()){
+
+    public void update() {
+        if (!list.isEmpty()) {
             list.clear();
         }
-        try{
-            
+        try {
+
             list.add(center);
-            for(Being b:enemies){
-                if(abs(b.x-center.x)<fieldOfView&&abs(b.y-center.y)<fieldOfView){
+            for (Being b : enemies) {
+                if (abs(b.x - center.x) < fieldOfView && abs(b.y - center.y) < fieldOfView) {
                     list.add(b);
                 }
             }
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    private int roll(Being b1,Being b2){
+
+    private int roll(Being b1, Being b2) {
         Random rand = new Random();
-        return rand.nextInt(b1.atk)-b2.def;
+        return rand.nextInt(b1.atk) - b2.def;
     }
-    
-    public void fight(Being b1,Being b2){
-        int damage =roll(b1,b2);
-        if(b1.alive&&b2.alive){
-            if(damage>0){
+
+    public void fight(Being b1, Being b2) {
+        int damage = roll(b1, b2);
+        if (b1.alive && b2.alive) {
+            if (damage > 0) {
                 g.setColor(Color.red);
-                g.drawOval(b2.x*32, b2.y*32, 32, 32);
+                g.drawOval(b2.x * 32, b2.y * 32, 32, 32);
                 b1.attack(damage);
                 //b1.target.hurt=true;
                 //System.out.println(b1.name + " attacks "+b2.name + " and deals "+damage+" damage");
             }
-        }else {b1.target=null; b2.target=null;}
+        } else {
+            b1.target = null;
+            b2.target = null;
+        }
     }
-    public void checkFight(){
-        Iterator i= list.iterator();
-        while(i.hasNext()){
+
+    public void checkFight() {
+        Iterator i = list.iterator();
+        while (i.hasNext()) {
             Being b1 = (Being) i.next();
-            if(b1.target != null){
-                if(abs(b1.target.x-b1.x)<=1&&abs(b1.target.y-b1.y)<=1){
-                    if(b1.target.alive){
-                        fight(b1,b1.target);
+            if (b1.target != null) {
+                if (abs(b1.target.x - b1.x) <= 1 && abs(b1.target.y - b1.y) <= 1) {
+                    if (b1.target.alive) {
+                        fight(b1, b1.target);
                     }
                 }
             }
-        }   
+        }
     }
 }

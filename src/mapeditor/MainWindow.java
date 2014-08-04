@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package mapeditor;
 
 import java.awt.Color;
@@ -20,66 +19,68 @@ import mapeditor.FileManager.Block;
  * @author Piotr
  */
 public class MainWindow extends javax.swing.JFrame {
+
     //Main file manager
+
     private FileManager m = new FileManager();
     //Variables
-    private boolean dragged=false;
-    private int layer=0,selected=0,mouseX=0, mouseY=0,mapScrollX=0,mapScrollY=0,menuBarY=0;
+    private boolean dragged = false;
+    private int layer = 0, selected = 0, mouseX = 0, mouseY = 0, mapScrollX = 0, mapScrollY = 0, menuBarY = 0;
     private Block menu[][];
     //indicator
     private Rectangle rect;
 
-    public void displayMap(){                     
-        int num=0,windowH=jPanel2.getHeight()/m.imageW,windowW=jPanel2.getWidth()/m.imageW;
-         //jPanel1.setBackground(Color.);
-         for (int layerT = layer; layerT >= 0; layerT--) {
-             System.out.println("Layer:"+layerT);
-            for (int i = 0; i < m.map[0][i].length-mapScrollY-1&&i<=windowH; i++) {
-                if(layerT==1){
+    public void displayMap() {
+        int num = 0, windowH = jPanel2.getHeight() / m.imageW, windowW = jPanel2.getWidth() / m.imageW;
+        //jPanel1.setBackground(Color.);
+        for (int layerT = layer; layerT >= 0; layerT--) {
+            System.out.println("Layer:" + layerT);
+            for (int i = 0; i < m.map[0][i].length - mapScrollY - 1 && i <= windowH; i++) {
+                if (layerT == 1) {
                     JLabel rect = new JLabel();
-                    rect.setSize(jPanel2.getWidth(),jPanel2.getHeight());
+                    rect.setSize(jPanel2.getWidth(), jPanel2.getHeight());
                     rect.setOpaque(true);
-                    rect.setBackground(new Color(10,10,10,5));
+                    rect.setBackground(new Color(10, 10, 10, 5));
                     jPanel2.add(rect);
                 }
-                for (int j = 0; j < m.map[0].length-mapScrollX-1&&j<=windowW; j++) {
-                    if(m.map[layerT][j+mapScrollX][i+mapScrollY].ID !=0){
-                        System.out.print(m.map[layerT][j+mapScrollX][i+mapScrollY]+",");
-                        JLabel jLabel = new JLabel(new ImageIcon(m.map[layerT][j+mapScrollX][i+mapScrollY].sprite));
+                for (int j = 0; j < m.map[0].length - mapScrollX - 1 && j <= windowW; j++) {
+                    if (m.map[layerT][j + mapScrollX][i + mapScrollY].ID != 0) {
+                        System.out.print(m.map[layerT][j + mapScrollX][i + mapScrollY] + ",");
+                        JLabel jLabel = new JLabel(new ImageIcon(m.map[layerT][j + mapScrollX][i + mapScrollY].sprite));
                         jLabel.setSize(m.imageW, m.imageW);
-                        jLabel.setLocation(j*m.imageW,i*m.imageW);
+                        jLabel.setLocation(j * m.imageW, i * m.imageW);
                         jPanel2.add(jLabel);
                         num++;
                     }
-                }    
-                System.out.println();    
+                }
+                System.out.println();
             }
-            
-        }
-    }
-    
-    public void displayBlocks(){
-        int num=0,line=0;
-        for (int i = 0; i < menu[0].length-menuBarY; i++) {
-            System.out.println(i);
-            for (int j = 0; j < 4; j++) {
-                JLabel jLabel;
-                jLabel = new JLabel(new ImageIcon(menu[j][i+menuBarY].sprite));
-                jLabel.setSize(m.imageW, m.imageW);
-                jLabel.setLocation(j*m.imageW,i*m.imageW);
-                jPanel1.add(jLabel);
-                num++;
-            }       
+
         }
     }
 
-    public MainWindow() {  
+    public void displayBlocks() {
+        int num = 0, line = 0;
+        for (int i = 0; i < menu[0].length - menuBarY; i++) {
+            System.out.println(i);
+            for (int j = 0; j < 4; j++) {
+                JLabel jLabel;
+                jLabel = new JLabel(new ImageIcon(menu[j][i + menuBarY].sprite));
+                jLabel.setSize(m.imageW, m.imageW);
+                jLabel.setLocation(j * m.imageW, i * m.imageW);
+                jPanel1.add(jLabel);
+                num++;
+            }
+        }
+    }
+
+    public MainWindow() {
         m.loadGraph("res/world.png");
-        menu=m.menu;
+        menu = m.menu;
         initComponents();
         //jScrollPane1.
         displayMap();
-        jPanel1.setSize(m.imageW*4,jPanel1.getHeight());
+        jPanel1.setSize(m.imageW * 4, jPanel1.getHeight());
         displayBlocks();
     }
 
@@ -277,42 +278,42 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    void repaintView(){
+    void repaintView() {
         jPanel2.removeAll();
         displayMap();
         jPanel2.repaint();
     }
-    
-    void repaintMenu(){
+
+    void repaintMenu() {
         jPanel1.removeAll();
         displayBlocks();
         jPanel1.repaint();
     }
-    
+
     private void handleAdjust(java.awt.event.AdjustmentEvent evt) {//GEN-FIRST:event_handleAdjust
-        mapScrollX=jScrollBar2.getValue();
-        mapScrollY=jScrollBar1.getValue();
+        mapScrollX = jScrollBar2.getValue();
+        mapScrollY = jScrollBar1.getValue();
         repaintView();
     }//GEN-LAST:event_handleAdjust
 
     private void ClickOnPane2(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClickOnPane2
-        int x=evt.getX()/m.imageW+jScrollBar2.getValue();
-        int y=evt.getY()/m.imageW+jScrollBar1.getValue();
+        int x = evt.getX() / m.imageW + jScrollBar2.getValue();
+        int y = evt.getY() / m.imageW + jScrollBar1.getValue();
         m.map[layer][x][y] = m.block[selected];
         repaintView();
     }//GEN-LAST:event_ClickOnPane2
 
     private void select(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_select
-        int scrollBarY=jScrollBar3.getValue();
-        int x=evt.getX()/m.imageW,y=(evt.getY())/m.imageW;
-        selected = x+y*4+scrollBarY*4+layer*126;
+        int scrollBarY = jScrollBar3.getValue();
+        int x = evt.getX() / m.imageW, y = (evt.getY()) / m.imageW;
+        selected = x + y * 4 + scrollBarY * 4 + layer * 126;
     }//GEN-LAST:event_select
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         JFileChooser chooser = new JFileChooser();
         int retrival = chooser.showSaveDialog(null);
         if (retrival == JFileChooser.APPROVE_OPTION) {
-            m.save(chooser.getSelectedFile()+".txt");
+            m.save(chooser.getSelectedFile() + ".txt");
         }
         repaintView();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -328,31 +329,31 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void mousePress(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mousePress
-       System.out.println(layer);
-       mouseX=evt.getX()/m.imageW+jScrollBar2.getValue();
-       mouseY=evt.getY()/m.imageW+jScrollBar1.getValue();
-       dragged=true;
-       rect=new Rectangle();
-       rect.x=evt.getX();
-       rect.y=evt.getY();
-       repaintView();
+        System.out.println(layer);
+        mouseX = evt.getX() / m.imageW + jScrollBar2.getValue();
+        mouseY = evt.getY() / m.imageW + jScrollBar1.getValue();
+        dragged = true;
+        rect = new Rectangle();
+        rect.x = evt.getX();
+        rect.y = evt.getY();
+        repaintView();
     }//GEN-LAST:event_mousePress
 
     private void mouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mouseReleased
-        int t_mouseX=evt.getX()/m.imageW+jScrollBar2.getValue();
-        int t_mouseY=evt.getY()/m.imageW+jScrollBar1.getValue();
-        dragged=false;
+        int t_mouseX = evt.getX() / m.imageW + jScrollBar2.getValue();
+        int t_mouseY = evt.getY() / m.imageW + jScrollBar1.getValue();
+        dragged = false;
         for (int i = mouseY; i <= t_mouseY; i++) {
             for (int j = mouseX; j <= t_mouseX; j++) {
-                 m.map[layer][j][i] = m.block[selected];
+                m.map[layer][j][i] = m.block[selected];
             }
         }
         repaintView();
     }//GEN-LAST:event_mouseReleased
 
     private void scrollMenu(java.awt.event.AdjustmentEvent evt) {//GEN-FIRST:event_scrollMenu
-        menuBarY=jScrollBar3.getValue();
-        repaintMenu();      
+        menuBarY = jScrollBar3.getValue();
+        repaintMenu();
     }//GEN-LAST:event_scrollMenu
 
     private void resizeMainWindow(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_resizeMainWindow
@@ -360,19 +361,19 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_resizeMainWindow
 
     private void drawRect(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawRect
-       if(dragged){
-            rect.height = evt.getY()-rect.y;
-            rect.width = evt.getX()-rect.x;
+        if (dragged) {
+            rect.height = evt.getY() - rect.y;
+            rect.width = evt.getX() - rect.x;
             Graphics2D g2d = (Graphics2D) jPanel2.getGraphics();
-            g2d.drawRect(rect.x,rect.y, rect.width, rect.height);
-       }
+            g2d.drawRect(rect.x, rect.y, rect.width, rect.height);
+        }
     }//GEN-LAST:event_drawRect
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-       layer=jComboBox3.getSelectedIndex();
-       m.inintMenu(layer);
-       repaintView();
-       repaintMenu();
+        layer = jComboBox3.getSelectedIndex();
+        m.inintMenu(layer);
+        repaintView();
+        repaintMenu();
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     /**

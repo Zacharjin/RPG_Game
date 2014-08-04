@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package game;
 
 import java.util.ArrayList;
@@ -13,16 +12,18 @@ import java.util.ArrayList;
  * @author Piotr
  */
 public class AnimationManager {
-    private ArrayList <Animation> list = new ArrayList();
-    public AnimationManager(){
+
+    private ArrayList<Animation> list = new ArrayList();
+
+    public AnimationManager() {
     }
-    
-    public void update(){
-        
+
+    public void update() {
+
     }
-    
-    public void add(String text){
-        
+
+    public void add(String text) {
+
     }
-    
+
 }
